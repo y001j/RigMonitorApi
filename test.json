@@ -1,0 +1,23 @@
+{
+	"identity":"good",
+	"rig_id":1,
+	"rig_name": "big",
+	"CPU": "intel",
+	"board": "good card",
+	"hash_rate": 140,
+	"power": 99,
+	"cards": [
+				{"card_id": 0,
+				"card_name": "big super card",
+				"hash_rate": 130,
+				"temprature": 65,
+				"fan_speed": 50,
+				"power": 100},
+				{"card_id": 1,
+				"card_name": "big super card2",
+				"hash_rate": 130,
+				"temprature": 65,
+				"fan_speed": 50,
+				"power": 100}
+			]
+}

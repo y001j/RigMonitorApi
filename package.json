@@ -1,0 +1,25 @@
+{
+  "name": "api",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/scotch-io/node-token-authentication.git"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Chris Sevilleja <scotch.io>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "~4.16.1",
+    "morgan": "~1.9.0",
+    "mongoose": "~4.11.14",
+    "body-parser": "~1.18.2"
+  },
+  "description": "Using the new Express 4.0 Router to build an API",
+  "bugs": {
+    "url": "https://github.com/scotch-io/node-token-authentication/issues"
+  },
+  "homepage": "https://github.com/scotch-io/node-token-authentication#readme",
+  "version": "1.0.0"
+}

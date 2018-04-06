@@ -3,6 +3,7 @@ var Schema       = mongoose.Schema;
  var Card = require('./card');
 
 var RigSchema   = new Schema({
+	userid: String,
 	identity: String,
 	rig_id: String,
 	rig_name: String,

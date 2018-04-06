@@ -46,7 +46,7 @@ router.use(function(req, res, next) {
 	next();
 });
 
-// test route to make sure everything is working (accessed at GET http://localhost:8080/api)
+// test route to make sure everything is working (accessed at GET http://localhost:8081/api)
 router.get('/', function(req, res) {
 	res.json({ message: 'hooray! welcome to our api!' });	
 });
@@ -85,17 +85,19 @@ router.route('/bears')
 // ----------------------------------------------------
 router.route('/rigs')
 
-	// create a bear (accessed at POST http://localhost:8080/bears)
+	// create a rig information
 	.post(function(req, res) {
 		
 		var rig = new Rig();		// create a new instance of the Bear model
-
 		rig.identity = req.body.identity;  // set the bears name (comes from the request)
 		rig.rig_id = req.body.rig_id;
 		rig.rig_name = req.body.rig_name;
 		rig.CPU = req.body.CPU;
 		rig.board = req.body.board;
 		rig.power = req.body.power;
+		rig.accept = req.body.accept_share;
+		rig.reject = req.body.reject_share;
+		rig.userid = req.body.UserId;
 		for(var i=0;i<req.body.cards.length;i++){
 			var card = Object.create(null);
 			card.card_id = req.body.cards[i].card_id;
@@ -116,7 +118,7 @@ router.route('/rigs')
 		});		
 	})
 
-	// get all the bears (accessed at GET http://localhost:8080/api/bears)
+	// get all the rigs (accessed at GET http://localhost:8080/api/rigs)
 	.get(function(req, res) {
 		Rig.find(function(err, rigs) {
 			if (err)
@@ -125,18 +127,44 @@ router.route('/rigs')
 			res.json(rigs);
 		});
 	});
-// on routes that end in /bears/:bear_id
+
+router.route('/rigs/riglist')
+
+	// get the rig identities in 24 hours
+	.get(function(req, res) {
+		Rig.distinct("identity", {"$and":[{"createTime":{"$gt":Date.now()-86400000}},{"createTime":{"$lt":Date.now()}}] }, function(err, rigs) {
+			if (err)
+				res.send(err);
+			res.json(rigs);
+		});
+	})
+// Get rig information by id
 // ----------------------------------------------------
-router.route('/bears/:bear_id')
+router.route('/rigs/:UserId')
+
+	// get the rigs with that id
+	.get(function(req, res) {
+		Rig.find({ userid: req.params.UserId, "$and":[{"createTime":{"$gt":Date.now()-86400000}},{"createTime":{"$lt":Date.now()}}] }, function(err, rigs) {
+			if (err)
+				res.send(err);
+			res.json(rigs);
+		}).limit(5).
+  sort({ _id: -1 });
+	})
+
+//Get rig information by user id and rig id
+router.route('/rigs/:UserId/:rigid')
 
 	// get the bear with that id
 	.get(function(req, res) {
-		Bear.findById(req.params.bear_id, function(err, bear) {
+		Rig.find({ userid: req.params.UserId, identity: req.params.rigid, "$and":[{"createTime":{"$gt":Date.now()-86400000}},{"createTime":{"$lt":Date.now()}}] }, function(err, rigs) {
 			if (err)
 				res.send(err);
-			res.json(bear);
-		});
+			res.json(rigs);
+		}).limit(5).
+  sort({ _id: -1 });
 	})
+
 
 	// update the bear with this id
 	.put(function(req, res) {
